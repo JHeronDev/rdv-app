@@ -1,0 +1,209 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f4f9;
+    text-align: center;
+    align-items: center;
+
+}
+
+/* NAVBAR GLOBALE */
+.navbar {
+    background-color: #0066cc;
+    color: white;
+    padding: 0.8em 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 50px 0;
+    height: 40px;
+}
+
+
+.logo a {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1em;
+}
+
+.nav-links a {
+
+    background-color: white;
+    color: #0066cc;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: #c5c5c5;
+}
+
+.nav-links button {
+    background-color: white;
+    color: #0066cc;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-links button:hover {
+    background-color: #c5c5c5;
+    color: rgb(218, 1, 1);
+    
+}
+
+@media (max-width: 768px) {
+
+    .nav-links a,
+    button {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+
+
+
+main {
+    text-align: center;
+    padding: 2em;
+}
+
+.intro {
+    background: white;
+    margin: auto;
+    padding: 2em;
+    border-radius: 12px;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.intro button {
+    padding: 10px 20px;
+    margin-top: 1em;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.intro button:hover {
+    background: #004999;
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 3em;
+    padding: 1em;
+    background: #ddd;
+}
+
+#calendrier {
+    width: 100%;
+    max-width: 400px;
+    margin: 2em auto;
+    background: #fff;
+    padding: 1em;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+.cal-jours,
+.cal-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.3em;
+}
+
+.cal-jours div {
+    font-weight: bold;
+}
+
+.cal-dates div {
+    padding: 0.8em;
+    cursor: pointer;
+    border-radius: 6px;
+    background: #e0e0e0;
+    transition: 0.2s;
+}
+
+.cal-dates div:hover {
+    background: #66b3ff;
+    color: white;
+}
+
+.cal-dates .autre-mois {
+    opacity: 0.4;
+}
+
+.cal-dates .auj {
+    background: #0066cc;
+    color: white;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+table {
+
+    border-collapse: collapse;
+    margin: auto;
+}
+
+.zone-creneaux {
+    margin: auto;
+    margin-top: 20px;
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-creneau {
+    background-color: #0066cc;
+    color: white;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-creneau:hover {
+    background-color: #004d99;
+}
