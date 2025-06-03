@@ -24,27 +24,37 @@ function genererCalendrier(date) {
         calDates.innerHTML += `<div class="autre-mois">${jour}</div>`;
     }
 
+
     // Jours du mois actuel
     for (let i = 1; i <= nbJours; i++) {
         const ajd = new Date();
-        const isToday =
-            i === ajd.getDate() &&
-            mois === ajd.getMonth() &&
-            annee === ajd.getFullYear();
+        const dateJour = new Date(annee, mois, i);
+        const estPasse = dateJour < ajd;
 
-        calDates.innerHTML += `<div class="${isToday ? "auj" : ""}" data-jour="${i}">${i}</div>`;
+        const dateStr = `${annee}-${(mois + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+        const estDispo = datesDisponibles.includes(dateStr);
+
+        calDates.innerHTML += `<div class="${estPasse ? "passe" : ""} ${estDispo ? "disponible" : ""}" data-jour="${i}">${i}</div>`;
     }
+
 
     // Ajouter un écouteur pour la sélection
     document.querySelectorAll("#cal-dates div").forEach(cell => {
         if (!cell.classList.contains("autre-mois")) {
             cell.addEventListener("click", () => {
+                // Efface les sélections précédentes
+                document.querySelectorAll("#cal-dates div.selectionne").forEach(c => c.classList.remove("selectionne"));
+                cell.classList.add("selectionne");
+
                 const jour = cell.getAttribute("data-jour");
                 const moisActuel = dateActive.getMonth() + 1;
                 const anneeActuelle = dateActive.getFullYear();
-                const dateStr = `${anneeActuelle}-${moisActuel.toString().padStart(2, '0')}-${jour.toString().padStart(2, '0')}`;
+                const dateStr = `${anneeActuelle}-${moisActuel.toString().padStart(2, '0')}-${jour.padStart(2, '0')}`;
 
+                // Met à jour le texte
+                document.getElementById("jour-selectionne").textContent = `${jour}/${moisActuel}/${anneeActuelle}`;
 
+                // Appel AJAX
                 fetch("rdv.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -65,8 +75,27 @@ function genererCalendrier(date) {
                             btn.className = "btn-creneau";
                             btn.textContent = creneau.heure;
                             btn.onclick = () => {
-                                alert(`Créneau choisi : ${creneau.heure}`);
+                                const serviceId = document.getElementById("service-select").value;
+                                if (!serviceId) {
+                                    alert("Veuillez d'abord sélectionner un service.");
+                                    return;
+                                }
+
+                                if (!confirm(`Confirmer la réservation du créneau ${creneau.heure} pour ce service ?`)) return;
+
+                                fetch("rdv.php", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                    body: `action=reservation&date=${dateStr}&heure=${creneau.heure}&service_id=${serviceId}`
+                                })
+                                    .then(res => res.text())
+                                    .then(txt => {
+                                        alert(txt);
+                                        location.reload(); // pour rafraîchir les créneaux
+                                    })
+                                    .catch(err => console.error("Erreur réservation :", err));
                             };
+
                             creneauxDiv.appendChild(btn);
                         });
                     })
@@ -76,6 +105,7 @@ function genererCalendrier(date) {
             });
         }
     });
+
 
 }
 
@@ -89,7 +119,18 @@ document.getElementById("mois-precedent").addEventListener("click", () => {
     genererCalendrier(dateActive);
 });
 
-// Initialisation
+let datesDisponibles = [];
+
+fetch("rdv.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "action=dates_disponibles"
+})
+    .then(res => res.json())
+    .then(data => {
+        datesDisponibles = data;
+        genererCalendrier(dateActive); // Maintenant qu'on a les dates
+    });
 genererCalendrier(dateActive);
 
 

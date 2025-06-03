@@ -37,6 +37,23 @@ if (isset($_POST['changer_mot_de_passe'])) {
         $erreur = "Ancien mot de passe incorrect.";
     }
 }
+// Annulation de rendez-vous
+if (isset($_POST['annuler_rdv']) && isset($_POST['rdv_id'])) {
+    $rdv_id = $_POST['rdv_id'];
+
+    // On vérifie que le rdv appartient bien à l'utilisateur
+    $verif = $connexion->prepare("SELECT * FROM rdv WHERE id = ? AND utilisateur_id = ?");
+    $verif->execute([$rdv_id, $id_utilisateur]);
+
+    if ($verif->fetch()) {
+        // On supprime
+        $delete = $connexion->prepare("DELETE FROM rdv WHERE id = ?");
+        $delete->execute([$rdv_id]);
+        $message = "Rendez-vous annulé.";
+    } else {
+        $erreur = "Action non autorisée.";
+    }
+}
 
 // Historique des rendez-vous
 $rdv = $connexion->prepare("SELECT r.*, s.nom AS service_nom FROM rdv r JOIN services s ON r.service_id = s.id WHERE r.utilisateur_id = ? ORDER BY date DESC, heure DESC");
@@ -114,6 +131,8 @@ $liste_rdv = $rdv->fetchAll(PDO::FETCH_ASSOC);
                 <th>Heure</th>
                 <th>Service</th>
                 <th>Statut</th>
+                <th>Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -123,6 +142,18 @@ $liste_rdv = $rdv->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= $rdv['heure'] ?></td>
                     <td><?= htmlspecialchars($rdv['service_nom']) ?></td>
                     <td><?= $rdv['statut'] ?></td>
+                    <td>
+                        <?php if (strtotime($rdv['date'] . ' ' . $rdv['heure']) > time()): ?>
+                            <form method="POST" onsubmit="return confirm('Annuler ce rendez-vous ?');">
+                                <input type="hidden" name="annuler_rdv" value="1">
+                                <input type="hidden" name="rdv_id" value="<?= $rdv['id'] ?>">
+                                <button type="submit">Annuler</button>
+                            </form>
+                        <?php else: ?>
+                            <em>Passé</em>
+                        <?php endif; ?>
+                    </td>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>

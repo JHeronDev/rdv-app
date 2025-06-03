@@ -4,16 +4,15 @@ require '../includes/auth.php';
 rediriger_si_non_admin();
 
 
-// Suppression utilisateur
-if (isset($_GET['supprimer']) && is_numeric($_GET['supprimer'])) {
-    $id = (int) $_GET['supprimer'];
-
-    // On empêche l’admin de se supprimer lui-même
+// admin/manage_users.php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer']) && is_numeric($_POST['supprimer'])) {
+    $id = (int) $_POST['supprimer'];
     if ($id !== $_SESSION['utilisateur_id']) {
-        $requete = $connexion->prepare("DELETE FROM utilisateurs WHERE id = ?");
-        $requete->execute([$id]);
+        $stmt = $connexion->prepare("DELETE FROM utilisateurs WHERE id = ?");
+        $stmt->execute([$id]);
     }
 }
+
 
 // Liste utilisateurs
 $utilisateurs = $connexion->query("SELECT * FROM utilisateurs ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
@@ -76,8 +75,11 @@ $utilisateurs = $connexion->query("SELECT * FROM utilisateurs ORDER BY id DESC")
                     <td><?= $utilisateur['role'] ?></td>
                     <td>
                         <?php if ($utilisateur['id'] !== $_SESSION['utilisateur_id']): ?>
-                            <a href="?supprimer=<?= $utilisateur['id'] ?>"
-                                onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</a>
+                            <form method="POST" style="display:inline" onsubmit="return confirm('Supprimer cet utilisateur ?')">
+                                <input type="hidden" name="supprimer" value="<?= $utilisateur['id'] ?>">
+                                <button type="submit">Supprimer</button>
+                            </form>
+
                         <?php else: ?>
                             (vous)
                         <?php endif; ?>

@@ -21,10 +21,10 @@ require 'includes/functions.php';
         </div>
 
         <div class="nav-links">
-            
+
             <?php if (est_connecte()): ?>
-                <a  href="rdv.php">Réserver</a>
-                <a  href="profile.php">Mon profil</a>
+                <a href="rdv.php">Réserver</a>
+                <a href="profile.php">Mon profil</a>
                 <?php if (est_admin()): ?>
                     <a href="admin/dashboard.php">Admin</a>
                 <?php endif; ?>
@@ -42,7 +42,7 @@ require 'includes/functions.php';
 
     </nav>
 
-    
+
     <main>
         <section class="intro">
             <h2>Réservez vos rendez-vous en ligne</h2>

@@ -50,10 +50,13 @@ $nb_services = $connexion->query("SELECT COUNT(*) FROM services")->fetchColumn()
     <p>Rendez-vous pris : <?= $nb_rdv ?></p>
     <p>Services proposés : <?= $nb_services ?></p>
 
-
-    <a href="manage_slots.php">Gérer les créneaux</a>
-    <a href="manage_users.php">Gérer les utilisateurs</a>
-    <a href="export.php">Exporter les RDV</a>
+    <h2>Actions administratives</h2>
+    <div class="admin-links">
+        <a href="manage_slots.php">Gérer les créneaux</a>
+        <a href="manage_users.php">Gérer les utilisateurs</a>
+        <a href="services.php">Gérer les services</a>
+        <a href="export.php" target="_blank">Exporter les rendez-vous (pdf)</a>
+    </div>
 
     <script src="../script.js"></script>
 </body>
