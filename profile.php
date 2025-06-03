@@ -1,7 +1,6 @@
 <?php
 require 'includes/db.php';
 require 'includes/auth.php';
-require 'includes/functions.php';
 
 
 $id_utilisateur = $_SESSION['utilisateur_id'];

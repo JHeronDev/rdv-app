@@ -1,7 +1,6 @@
 <?php
 require '../includes/db.php';
 require '../includes/auth.php';
-require '../includes/functions.php';
 rediriger_si_non_admin();
 
 

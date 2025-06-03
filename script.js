@@ -129,19 +129,19 @@ fetch("rdv.php", {
     .then(res => res.json())
     .then(data => {
         datesDisponibles = data;
-        genererCalendrier(dateActive); // Maintenant qu'on a les dates
+        genererCalendrier(dateActive);
     });
 genererCalendrier(dateActive);
 
 
 function deconnecter() {
     if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
-        fetch("logout.php", {
-            method: "POST"
-        })
+        let path = window.location.pathname.includes('/admin') ? '../logout.php' : 'logout.php';
+        let pathindex = window.location.pathname.includes('/admin') ? '../index.php' : 'index.php';
+        fetch(path, { method: "POST" })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "index.php";
+                    window.location.href = pathindex;
                 } else {
                     alert("Erreur lors de la déconnexion.");
                 }

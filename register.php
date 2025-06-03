@@ -1,8 +1,6 @@
 <?php
-
 require 'includes/db.php';
 require 'includes/auth.php';
-require 'includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];

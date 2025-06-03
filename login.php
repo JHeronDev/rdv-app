@@ -1,7 +1,6 @@
 <?php
 require 'includes/db.php';
 require 'includes/auth.php';
-require 'includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
@@ -17,6 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erreur = "Identifiants incorrects.";
     }
 }
+function obtenir_utilisateur_par_email($email, $connexion)
+{
+    $sql = "SELECT * FROM utilisateurs WHERE email = ?";
+    $requete = $connexion->prepare($sql);
+    $requete->execute([$email]);
+    return $requete->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
